@@ -1,0 +1,25 @@
+{
+    "0": {
+        "type": "power",
+        "voltage": 12
+    },
+    "1": {
+        "type":
+        "parallel",
+        "value": [{
+            "0": {
+                "type": "resistor",
+                "resistance": 1
+            },
+            "1": {
+                "type": "LED",
+                "vDrop": 2.1
+            }
+        }, {
+            "0": {
+                "type": "resistor",
+                "resistance": 2
+            }
+        }]
+    }
+}
