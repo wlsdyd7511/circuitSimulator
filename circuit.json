@@ -1,25 +1,22 @@
 {
     "0": {
-        "type": "power",
-        "voltage": 12
+        "type": "DCPower",
+        "voltage": 12,
+        "pin": ["a", "b"]
     },
     "1": {
-        "type":
-        "parallel",
-        "value": [{
-            "0": {
-                "type": "resistor",
-                "resistance": 1
-            },
-            "1": {
-                "type": "LED",
-                "vDrop": 2.1
-            }
-        }, {
-            "0": {
-                "type": "resistor",
-                "resistance": 2
-            }
-        }]
+        "type": "resistor",
+        "resistance": 1,
+        "pin": ["a", "b"]
+    },
+    "2": {
+        "type": "resistor",
+        "resistance": 1,
+        "pin": ["b", "c"]
+    },
+    "3": {
+        "type": "resistor",
+        "resistance": 1,
+        "pin": ["a", "c"]
     }
 }
