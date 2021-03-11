@@ -1,25 +1,12 @@
 import json
 import sys
 
-resistSum = 0
+circuitl = list()
 
-circuit = json.load(open(sys.argv[1]))
+with open(sys.argv[1], 'r') as f:
+  circuit = json.load(f)
 #print(circuit)
 
-#calculate resistance
-#temp = circuit["0"]
-#print(temp)
-
-
-
-def parallelResist (parallel):
-#  print(parallel["value"])
-  pList = parallel["value"]
-  for i in range (0, len(pList)):
-#    print(pList[i])
-    for j in range (0, len(pList[i])):
-#      print(type(pList))
-      print(pList[i][str(j)])
-    
-
-parallelResist(circuit["1"])
+for i in range(0, len(circuit)):
+  circuitl.append(circuit[str(i)])
+  print(circuitl)
