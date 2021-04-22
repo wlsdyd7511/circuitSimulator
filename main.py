@@ -5,13 +5,27 @@ import copy
 trackPoint = str()
 trackElement = str()
 
-def find(pin, tracking):
-  temp = list()
-  for i in circuit:
-    if(pin in circuit[i]['pin']):
-      if  i != tracking:
-        temp.append(i)
-  return temp
+def getAdMatrix(cir):
+  pinList = list()
+  for k in cir:
+    for pin in cir[k]["pin"]:
+      if not pin in pinList:
+        pinList.append(pin)
+  pinList.sort()
+  numPin = len(pinList)
+  matrix = [[0 for i in range(numPin)] for j in range(numPin)]
+  for i in range(numPin):
+    for j in range(numPin):
+      cnt = 0
+      if i == j:
+        continue
+      for k in cir:
+        if (pinList[i] in cir[k]["pin"]) and (pinList[j] in cir[k]["pin"]):
+          cnt += 1
+      matrix[i][j] = cnt
+  print(matrix)
+  return(matrix)
+
 
 with open(sys.argv[1], 'r') as f:
   circuit = json.load(f)
@@ -28,10 +42,8 @@ for i in circuit:
     editCircuit[circuit[i]['pin'][0]][circuit[i]['pin'][1]] = circuit[i]['voltage']
     trackPoint = circuit[i]['pin'][1]
     trackElement = i
-    linked = find(trackPoint, trackElement)
-    print(linked)
 
 
 
-
-print(editCircuit)
+adMatrix = getAdMatrix(circuit)
+#print(editCircuit)
