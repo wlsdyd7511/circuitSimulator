@@ -24,6 +24,23 @@ def getAdMatrix(cir):
           cnt += 1
       matrix[i][j] = cnt
   print(matrix)
+
+  bmatrix = matrix
+  pinToDel = list()
+  for i in range(numPin):
+    cntPin = 0
+    for j in range(numPin):
+      cntPin += matrix[i][j]
+    if cntPin == 2:
+      pinToDel.append(i)
+  pinToDel.reverse()
+  cntSeq = 0
+  for i in pinToDel:
+    del bmatrix[i]
+    cntSeq += 1
+    for j in range(numPin - cntSeq):
+      del bmatrix[j][i]
+  print(bmatrix)
   return(matrix)
 
 
