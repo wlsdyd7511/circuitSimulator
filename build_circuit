@@ -1,28 +1,55 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QLabel, QLineEdit, QTextEdit)
+from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QPushButton, QLabel, QInputDialog)
 
 class MyApp(QWidget):
 
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.res = ""
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
+        btn1.clicked.connect(self.showDialog1)
         btn2 = QPushButton('resister', self)
+        btn2.clicked.connect(self.showDialog2)
         btn3 = QPushButton('diode', self)
+        btn3.clicked.connect(self.showDialog3)
+        self.label = QLabel(self)
 
-         def initUI(self):
+
         grid = QGridLayout()
         self.setLayout(grid)
 
-        grid.addWidget(btn1, 1, 0)
-        grid.addWidget(btn2, 1, 1)
-        grid.addWidget(btn3, 1, 2)
+        grid.addWidget(btn1, 0, 0)
+        grid.addWidget(btn2, 0, 1)
+        grid.addWidget(btn3, 0, 2)
+        grid.addWidget(self.label, 1, 1)
 
         self.setWindowTitle('Build Circuit')
         self.setGeometry(300, 300, 300, 200)
         self.show()
+
+    def showDialog1(self):
+        text, ok = QInputDialog.getText(self, 'Input Type', "Enter Type")
+
+        if ok:
+            self.res += str(text) + "\n"
+            self.label.setText(self.res)
+
+    def showDialog2(self):
+        text, ok = QInputDialog.getText(self, 'Input Type', "Enter Type")
+
+        if ok:
+            self.res += str(text) + "\n"
+            self.label.setText(self.res)
+
+    def showDialog3(self):
+        text, ok = QInputDialog.getText(self, 'Input Type', "Enter Type")
+
+        if ok:
+            self.res += str(text) + "\n"
+            self.label.setText(self.res)
 
 
 if __name__ == '__main__':
