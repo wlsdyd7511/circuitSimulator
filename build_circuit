@@ -1,0 +1,31 @@
+import sys
+from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QLabel, QLineEdit, QTextEdit)
+
+class MyApp(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        btn1 = QPushButton('DCPower', self)
+        btn2 = QPushButton('resister', self)
+        btn3 = QPushButton('diode', self)
+
+         def initUI(self):
+        grid = QGridLayout()
+        self.setLayout(grid)
+
+        grid.addWidget(btn1, 1, 0)
+        grid.addWidget(btn2, 1, 1)
+        grid.addWidget(btn3, 1, 2)
+
+        self.setWindowTitle('Build Circuit')
+        self.setGeometry(300, 300, 300, 200)
+        self.show()
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    sys.exit(app.exec_())
