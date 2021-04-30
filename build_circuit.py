@@ -37,13 +37,13 @@ class MyApp(QWidget):
         if ok:
             self.resList.append(["DCPower"])
             self.resList[self.cnt].append(int(text))
-                text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
+            text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
 
-                if ok:
-                    self.resList[self.cnt].append(tuple(text))
-                    self.res += "DCPower" + "\n"
-                    self.label.setText(self.res)
-                    cnt += 1
+            if ok:
+                self.resList[self.cnt].append(tuple(text))
+                self.res += "DCPower" + "\n"
+                self.label.setText(self.res)
+                cnt += 1
 
 
     def showDialogResister(self):
