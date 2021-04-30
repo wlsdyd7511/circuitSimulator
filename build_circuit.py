@@ -7,17 +7,18 @@ class MyApp(QWidget):
         super().__init__()
         self.initUI()
         self.res = ""
-        self.resList = list()
         self.cnt = 0
+        self.resList = list()
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
-        btn1.clicked.connect(self.showDialogDCPower)
+        btn1.clicked.connect(self.showDialogDC)
         btn2 = QPushButton('resister', self)
         btn2.clicked.connect(self.showDialogResister)
         btn3 = QPushButton('diode', self)
         btn3.clicked.connect(self.showDialogDiode)
         self.label = QLabel(self)
+
 
         grid = QGridLayout()
         self.setLayout(grid)
@@ -75,8 +76,3 @@ class MyApp(QWidget):
                 self.label.setText(self.res)
                 cnt += 1
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = MyApp()
-    sys.exit(app.exec_())
