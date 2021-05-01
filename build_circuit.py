@@ -44,7 +44,7 @@ class MyApp(QWidget):
                 self.resList[self.cnt].append(tuple(text))
                 self.res += "DCPower" + "\n"
                 self.label.setText(self.res)
-                cnt += 1
+                self.cnt += 1
 
 
     def showDialogResister(self):
@@ -59,7 +59,7 @@ class MyApp(QWidget):
                 self.resList[self.cnt].append(tuple(text))
                 self.res += "Resister" + "\n"
                 self.label.setText(self.res)
-                cnt += 1
+                self.cnt += 1
 
 
     def showDialogDiode(self):
@@ -74,5 +74,5 @@ class MyApp(QWidget):
                 self.resList[self.cnt].append(tuple(text))
                 self.res += "Diode" + "\n"
                 self.label.setText(self.res)
-                cnt += 1
+                self.cnt += 1
 
