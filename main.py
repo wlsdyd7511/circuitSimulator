@@ -24,9 +24,9 @@ def getAdMatrix(cir):
                 if (pinList[i] in cir[k]["pin"]) and (pinList[j] in cir[k]["pin"]):
                     cnt += 1
             matrix[i][j] = cnt
-    print(matrix)
+    # print(matrix)
 
-    bMatrix = matrix
+    bMatrix = copy.deepcopy(matrix)
     pinToDel = list()
     for i in range(numPin):
         cntPin = 0
@@ -41,15 +41,15 @@ def getAdMatrix(cir):
         cntSeq += 1
         for j in range(numPin - cntSeq):
             del bMatrix[j][i]
-    print(bMatrix)
-    return(matrix)
+    # print(bMatrix)
+    return((matrix, bMatrix))
 
 
 with open(sys.argv[1], 'r') as f:
     circuit = json.load(f)
 # print(circuit)
 editCircuit = copy.deepcopy(circuit)
-#circuitOut = json.dumps(circuit, indent = 4)
+# circuitOut = json.dumps(circuit, indent = 4)
 # print(circuitOut)
 # print(type(circuitOut))
 
@@ -63,5 +63,5 @@ for i in circuit:
         trackElement = i
 
 
-adMatrix = getAdMatrix(circuit)
-# print(editCircuit)
+(adMatrix, sMatrix) = getAdMatrix(circuit)
+# print(adMatrix, '\n', sMatrix)
