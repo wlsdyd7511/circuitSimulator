@@ -12,7 +12,7 @@ class MyApp(QWidget):
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
-        btn1.clicked.connect(self.showDialogDC)
+        btn1.clicked.connect(self.showDialogDCPower)
         btn2 = QPushButton('resister', self)
         btn2.clicked.connect(self.showDialogResister)
         btn3 = QPushButton('diode', self)
@@ -37,7 +37,7 @@ class MyApp(QWidget):
 
         if ok:
             self.resList.append(["DCPower"])
-            self.resList[self.cnt].append(int(text))
+            self.resList[self.cnt].append(float(text))
             text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
 
             if ok:
@@ -52,7 +52,7 @@ class MyApp(QWidget):
 
         if ok:
             self.resList.append(["Resister"])
-            self.resList[self.cnt].append(int(text))
+            self.resList[self.cnt].append(float(text))
             text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
 
             if ok:
@@ -67,7 +67,7 @@ class MyApp(QWidget):
 
         if ok:
             self.resList.append(["Diode"])
-            self.resList[self.cnt].append(int(text))
+            self.resList[self.cnt].append(float(text))
             text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
 
             if ok:
@@ -76,3 +76,8 @@ class MyApp(QWidget):
                 self.label.setText(self.res)
                 self.cnt += 1
 
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    sys.exit(app.exec_())
