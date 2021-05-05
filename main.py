@@ -5,6 +5,7 @@ import copy
 trackPoint = str()
 trackElement = str()
 
+
 def getAdMatrix(cir):
   pinList = list()
   for k in cir:
@@ -69,17 +70,18 @@ def getBasicMatrix(matrix, pinList):
 
 with open(sys.argv[1], 'r') as f:
   circuit = json.load(f)
-#print(circuit)
+# print(circuit)
 editCircuit = copy.deepcopy(circuit)
-#circuitOut = json.dumps(circuit, indent = 4)
-#print(circuitOut)
-#print(type(circuitOut))
+# circuitOut = json.dumps(circuit, indent = 4)
+# print(circuitOut)
+# print(type(circuitOut))
 
 for i in circuit:
-  #print(circuit[i])
+  # print(circuit[i])
   if(circuit[i]['type'] == 'DCPower'):
     editCircuit[circuit[i]['pin'][0]] = dict()
-    editCircuit[circuit[i]['pin'][0]][circuit[i]['pin'][1]] = circuit[i]['voltage']
+    editCircuit[circuit[i]['pin'][0]][circuit[i]
+                      ['pin'][1]] = circuit[i]['voltage']
     trackPoint = circuit[i]['pin'][1]
     trackElement = i
 
