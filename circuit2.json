@@ -1,0 +1,50 @@
+{
+  "BT1": {
+    "type": "DCPower",
+    "voltage": 12,
+    "pin": [
+      "d",
+      "a"
+    ]
+  },
+  "R1": {
+    "type": "resistor",
+    "resistance": 1,
+    "pin": [
+      "a",
+      "b"
+    ]
+  },
+  "R2": {
+    "type": "resistor",
+    "resistance": 1,
+    "pin": [
+      "a",
+      "c"
+    ]
+  },
+  "R3": {
+    "type": "resistor",
+    "resistance": 1,
+    "pin": [
+      "c",
+      "d"
+    ]
+  },
+  "R4": {
+    "type": "resistor",
+    "resistance": 1,
+    "pin": [
+      "b",
+      "d"
+    ]
+  },
+  "R5": {
+    "type": "resistor",
+    "resistance": 1,
+    "pin": [
+      "b",
+      "d"
+    ]
+  }
+}
