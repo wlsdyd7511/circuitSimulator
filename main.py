@@ -55,7 +55,7 @@ def getBasicMatrix(matrix, pinList):
     endCheck = 1
     for i in range(len(basicMatrix)):
       for j in range(len(basicMatrix)):
-        if basicMatrix[i][j] >= 2:
+        if bM[i][j] >= 2:
           superBasicMatrix[i][j] = 1                                 #seq겹 병렬 무시
           byoungLyeol.append(list())
           byoungLyeol[seq].append(((bE[i],bE[j]),basicMatrix[i][j])) #seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
