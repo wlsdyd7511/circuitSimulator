@@ -25,7 +25,6 @@ def getAdMatrix(cir):
         if ((pinList[i] in cir[k]["pin"]) and (pinList[j] in cir[k]["pin"])):
           cnt += 1
           matrix[i][j] = cnt
-  # print(matrix)
   return((matrix, pinList))
 
 
@@ -67,20 +66,9 @@ def findParallel(bM, bE, seq, parallel):
     x, y = bE.index(i[0]), bE.index(i[1])
     if bM[x][y] >= 2:
       print(bM, bE, seq, bM[x][y], x, y)
-      parallel[seq].append(((bE[x], bE[y]), bM[x][y]))
-      bM[x][y] = 1
+      parallel[seq].append(((bE[x], bE[y]), bM[x][y]))# seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
+      bM[x][y] = 1# seq겹 병렬 무시
       isEnd = False
-    
-  # for i in range(len(bM)):
-    # for j in range(len(bM)):
-      # if bM[i][j] >= 2:
-        # print(bM, bE, seq, bM[i][j], i, j)
-        # seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
-        # parallel[seq].append(
-          # ((bE[i], bE[j]), bM[i][j]))
-        # bM[i][j] = 1  # seq겹 병렬 무시
-        # isEnd = 0
-        # print(isEnd)
   if isEnd == True:
     parallel.pop()
     return((bM, parallel))
@@ -92,14 +80,9 @@ def findParallel(bM, bE, seq, parallel):
 
 with open(sys.argv[1], 'r') as f:
   circuit = json.load(f)
-# print(circuit)
 editCircuit = copy.deepcopy(circuit)
-# circuitOut = json.dumps(circuit, indent = 4)
-# print(circuitOut)
-# print(type(circuitOut))
 
 for i in circuit:
-  # print(circuit[i])
   if(circuit[i]['type'] == 'DCPower'):
     editCircuit[circuit[i]['pin'][0]] = dict()
     editCircuit[circuit[i]['pin'][0]][circuit[i]
@@ -109,7 +92,6 @@ for i in circuit:
 
 
 (ADMatrix, pinList) = getAdMatrix(circuit)
-# print(editCircuit)
 print(ADMatrix)
 basicMatrix = getBasicMatrix(ADMatrix, pinList)
 print('bm', basicMatrix)
