@@ -3,9 +3,6 @@ import sys
 import copy
 import itertools
 
-trackPoint = str()
-trackElement = str()
-
 
 def getAdMatrix(cir):
   pinList = list()
