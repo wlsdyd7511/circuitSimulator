@@ -4,9 +4,6 @@ import copy
 import itertools
 import structures
 
-trackPoint = str()
-trackElement = str()
-
 
 def getAdMatrix(cir):
     pinList = list()
