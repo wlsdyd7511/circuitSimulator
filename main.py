@@ -2,7 +2,7 @@ import json
 import sys
 import copy
 import itertools
-import structures
+import structures as s
 
 
 def getAdMatrix(cir):
