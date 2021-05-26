@@ -26,6 +26,29 @@ def getAdMatrix(cir):
     return((matrix, pinList))
 
 
+def structureCircuit(matrix, pinList):
+    numPin = len(pinList)
+    findLine(matrix, pinList, numPin)
+
+
+def findConnected(matrix, pin):
+    connected = []
+    for i in range(len(matrix[pin])):
+        if matrix[pin][i] == 1:
+            connected.append(i)
+            if sum(matrix[i]) == 2:
+                connected += findConnected(matrix, i)
+
+    # 이제 connected를 순서대로 정렬한 후, 양 끝에있는거 제거 후 리턴
+    return connected
+
+
+def findLine(matrix, pinList, numPin):
+    for i in range(numPin):
+        if (sum(matrix[i]) == 2) and (2 not in matrix[i]):
+            findConnected(matrix, pinList, i)
+
+
 def getBasicMatrix(matrix, pinList):
     basicMatrix = copy.deepcopy(matrix)
     basicPinList = copy.deepcopy(pinList)
