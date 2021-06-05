@@ -38,15 +38,24 @@ def findConnected(matrix, pin):
             connected.append(i)
             if sum(matrix[i]) == 2:
                 connected += findConnected(matrix, i)
-
-    # 이제 connected를 순서대로 정렬한 후, 양 끝에있는거 제거 후 리턴
+    for i in range(len(connected)):
+        if len(end) == 1:
+            connected[i], connected[0] = connected[0], connected[i]
+        else:
+            connected[i], connected[-1] = connected[-1], connected[i]
+    for i in range(len(connected)):
+        for j in range(i+1, len(connected)):
+            if matrix[i][j] == 1:
+                connected[i+1], connected[j] = connected[j], connected[i+1]
+    del connected[0]
+    del connected[-1]
     return connected
 
 
 def findLine(matrix, pinList, numPin):
     for i in range(numPin):
         if (sum(matrix[i]) == 2) and (2 not in matrix[i]):
-            findConnected(matrix, pinList, i)
+            connected = findConnected(matrix, pinList, i)
 
 
 def getBasicMatrix(matrix, pinList):
