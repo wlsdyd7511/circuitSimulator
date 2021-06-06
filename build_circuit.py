@@ -1,24 +1,25 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QPushButton, QLabel, QInputDialog)
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QGridLayout, QPushButton, QLabel, QInputDialog)
+import json
+
 
 class MyApp(QWidget):
 
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.res = ""
+        self.res = str()
         self.cnt = 0
-        self.resList = list()
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
-        btn1.clicked.connect(self.showDialogDCPower)
+        btn1.clicked.connect(self.showDialog('DCPower'))
         btn2 = QPushButton('resister', self)
-        btn2.clicked.connect(self.showDialogResister)
+        btn2.clicked.connect(self.showDialog('Resister'))
         btn3 = QPushButton('diode', self)
-        btn3.clicked.connect(self.showDialogDiode)
+        btn3.clicked.connect(self.showDialog('Diode'))
         self.label = QLabel(self)
-
 
         grid = QGridLayout()
         self.setLayout(grid)
@@ -32,52 +33,62 @@ class MyApp(QWidget):
         self.setGeometry(300, 300, 300, 200)
         self.show()
 
-    def showDialogDCPower(self):
-        text, ok = QInputDialog.getText(self, 'Input Votage', "Enter Voltage")
-
-        if ok:
-            self.resList.append(["DCPower"])
-            self.resList[self.cnt].append(float(text))
-            text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
+    def showDialog(self, type):
+        if type == 'DCPower':
+            value, ok = QInputDialog.getText(
+                self, 'Input Votage', "Enter Voltage")
 
             if ok:
-                self.resList[self.cnt].append(tuple(text))
-                self.res += "DCPower" + "\n"
-                self.label.setText(self.res)
-                self.cnt += 1
+                pin1, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin in Tuple")
 
+                if ok:
+                    self.cnt += 1
+                    self.res += "DCPower"+str(self.cnt)+" : "+value+"V"+"\n"
+                    self.label.setText(self.res)
 
-    def showDialogResister(self):
-        text, ok = QInputDialog.getText(self, 'Input Value', "Enter Value")
-
-        if ok:
-            self.resList.append(["Resister"])
-            self.resList[self.cnt].append(float(text))
-            text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
+        if type == 'resistor':
+            value, ok = QInputDialog.getText(
+                self, 'Input Value', "Enter Value")
 
             if ok:
-                self.resList[self.cnt].append(tuple(text))
-                self.res += "Resister" + "\n"
-                self.label.setText(self.res)
-                self.cnt += 1
+                text, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin in Tuple")
 
+                if ok:
+                    self.res += "Resister"+str(self.cnt)+" : "+value+"Ω"+"\n"
+                    self.label.setText(self.res)
+                    self.cnt += 1
 
-    def showDialogDiode(self):
-        text, ok = QInputDialog.getText(self, 'Input Value', "Enter Value")
-
-        if ok:
-            self.resList.append(["Diode"])
-            self.resList[self.cnt].append(float(text))
-            text, ok = QInputDialog.getText(self, 'Input Pin', "Enter Pin in Tuple")
+        if type == 'Diode':
+            value, ok = QInputDialog.getText(
+                self, 'Input Value', "Enter Value")
 
             if ok:
-                self.resList[self.cnt].append(tuple(text))
-                self.res += "Diode" + "\n"
-                self.label.setText(self.res)
-                self.cnt += 1
+                text, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin in Tuple")
+
+                if ok:
+                    self.res += "Diode" + "\n"
+                    self.label.setText(self.res)
+                    self.cnt += 1
+
+        self.formDict(self, rawCircuit, type, self.cnt, float(value),)
+
+    def formDict(self, rawCircuit, type, cnt, value, pin):  # (self, dict, str, int, float, list)
+        key = type + str(cnt)
+        rawCircuit[key] = dict()
+        rawCircuit[key]["type"] = type
+        if type == "DCPower":
+            rawCircuit[key]["voltage"] = value
+        elif type == "resistor":
+            rawCircuit[key]["resistance"] = value
+        rawCircuit[key]["pin"] = pin
+        return rawCircuit
 
 
 if __name__ == '__main__':
+    rawCircuit = dict()
     app = QApplication(sys.argv)
     ex = MyApp()
     sys.exit(app.exec_())
