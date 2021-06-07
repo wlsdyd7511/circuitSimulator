@@ -9,17 +9,18 @@ class MyApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.rawCircuit = dict()
         self.res = str()
         self.cnt = {
-                    "DCPower" : 0,
-                    "resistor" : 0,
-                    "diode" : 0
-                   }
+            "DCPower": 0,
+            "resistor": 0,
+            "diode": 0
+        }
         self.valueName = {
-                          "DCPower" : "voltage"
-                          "resistor" : "resistance"
-                          "diode" : "voltage"
-                         }
+            "DCPower": "voltage",
+            "resistor": "resistance",
+            "diode": "voltage"
+        }
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
@@ -83,9 +84,11 @@ class MyApp(QWidget):
                     self.cnt[type] += 1
 
         pin = rawPin.split(",")
-        rawCircuit = self.formDict(self, rawCircuit, type, float(value), pin)
+        self.rawCircuit = self.formDict(
+            self, self.rawCircuit, type, float(value), pin)
 
-    def formDict(self, rawCircuit, type, value, pin):  # (self, dict, str, int, float, list)
+    def formDict(self, rawCircuit, type, value, pin):
+        #       (self, dict, str, int, float, list)
         key = type + str(self.cnt[type])
         rawCircuit[key] = dict()
         rawCircuit[key]["type"] = type
@@ -95,9 +98,8 @@ class MyApp(QWidget):
 
 
 if __name__ == '__main__':
-    rawCircuit = dict()
     app = QApplication(sys.argv)
     ex = MyApp()
     sys.exit(app.exec_())
-    with open("circuit.json","w") as json_file:
-        json.dump(rawCircuit, json_file)
+    with open("circuit.json", "w") as json_file:
+        json.dump(ex.rawCircuit, json_file)
