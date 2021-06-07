@@ -1,0 +1,26 @@
+{
+    "DCPower1": {
+        "type": "DCPower",
+        "voltage": 10.0,
+        "pin": [
+            "a",
+            "b"
+        ]
+    },
+    "resistor1": {
+        "type": "resistor",
+        "resistance": 100.0,
+        "pin": [
+            "b",
+            "c"
+        ]
+    },
+    "resistor2": {
+        "type": "resistor",
+        "resistance": 50.0,
+        "pin": [
+            "c",
+            "a"
+        ]
+    }
+}
