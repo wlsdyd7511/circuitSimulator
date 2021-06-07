@@ -15,6 +15,11 @@ class MyApp(QWidget):
                     "resistor" : 0,
                     "diode" : 0
                    }
+        self.valueName = {
+                          "DCPower" : "voltage"
+                          "resistor" : "resistance"
+                          "diode" : "voltage"
+                         }
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
@@ -78,16 +83,13 @@ class MyApp(QWidget):
                     self.cnt[type] += 1
 
         pin = rawPin.split(",")
-        rawCircuit = self.formDict(self, rawCircuit, type, self.cnt, float(value), pin)
+        rawCircuit = self.formDict(self, rawCircuit, type, float(value), pin)
 
-    def formDict(self, rawCircuit, type, cnt, value, pin):  # (self, dict, str, int, float, list)
-        key = type + str(cnt[type])
+    def formDict(self, rawCircuit, type, value, pin):  # (self, dict, str, int, float, list)
+        key = type + str(self.cnt[type])
         rawCircuit[key] = dict()
         rawCircuit[key]["type"] = type
-        if type == "DCPower":
-            rawCircuit[key]["voltage"] = value
-        elif type == "resistor":
-            rawCircuit[key]["resistance"] = value
+        rawCircuit[key][self.valueName[type]] = value
         rawCircuit[key]["pin"] = pin
         return rawCircuit
 
