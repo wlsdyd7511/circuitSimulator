@@ -119,7 +119,6 @@ def findLine(cir, matrix, pinList):
         return False, cir
 
 
-# basicMatrix, basicElements, seq = 0, parallel = list()
 def findParallel(bM, bE, seq, parallel):
     isEnd = True
     parallel.append(list())
