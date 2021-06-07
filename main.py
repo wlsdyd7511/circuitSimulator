@@ -119,26 +119,42 @@ def findLine(cir, matrix, pinList):
         return False, cir
 
 
-def findParallel(bM, bE, seq, parallel):
-    isEnd = True
-    parallel.append(list())
-    pinComb = itertools.combinations(bE, 2)
-    for i in pinComb:
-        x, y = bE.index(i[0]), bE.index(i[1])
-        if bM[x][y] >= 2:
-            print(bM, bE, seq, bM[x][y], x, y)
-            # seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
-            parallel[seq].append(((bE[x], bE[y]), bM[x][y]))
-            bM[x][y] = 1  # seq겹 병렬 무시
-            isEnd = False
-    if isEnd:
-        parallel.pop()
-        return((bM, parallel))
-    else:
-        basicMatrix = getBasicMatrix(bM, bE)
-        print('.')
-        return(findParallel(basicMatrix[0], basicMatrix[1], seq + 1, parallel))
-
+# def findParallel(bM, bE, seq, parallel):
+#     isEnd = True
+#     parallel.append(list())
+#     pinComb = itertools.combinations(bE, 2)
+#     for i in pinComb:
+#         x, y = bE.index(i[0]), bE.index(i[1])
+#         if bM[x][y] >= 2:
+#             print(bM, bE, seq, bM[x][y], x, y)
+#             # seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
+#             parallel[seq].append(((bE[x], bE[y]), bM[x][y]))
+#             bM[x][y] = 1  # seq겹 병렬 무시
+#             isEnd = False
+#     if isEnd:
+#         parallel.pop()
+#         return((bM, parallel))
+#     else:
+#         basicMatrix = getBasicMatrix(bM, bE)
+#         print('.')
+#         return(findParallel(basicMatrix[0], basicMatrix[1], seq + 1, parallel))
+def findParallel(cir, matrix, pinList):
+    lines = []
+    found = False
+    for i in range(len(pinList)):
+        for j in range(i+1, len(pinList)):
+            if matrix[i, j] >= 2:
+                for k in cir:
+                    if i in cir[k]['pin'] and j in cir[k]['pin']:
+                        lines.append(k)
+                found = True
+            if found:
+                break
+        if found:
+            break
+    if lines:
+        
+            
 
 def findBridge():
     isEnd = True
