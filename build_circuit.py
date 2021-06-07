@@ -43,8 +43,8 @@ class MyApp(QWidget):
                 self, 'Input Votage', "Enter Voltage")
 
             if ok:
-                pin, ok = QInputDialog.getText(
-                    self, 'Input Pin', "Enter Pin in Tuple")
+                rawPin, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin >pin1,pin2<")
 
                 if ok:
                     self.cnt[type] += 1
@@ -56,8 +56,8 @@ class MyApp(QWidget):
                 self, 'Input Value', "Enter Value")
 
             if ok:
-                pin, ok = QInputDialog.getText(
-                    self, 'Input Pin', "Enter Pin in Tuple")
+                rawPin, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin >pin1,pin2<")
 
                 if ok:
                     self.res += "Resister"+str(self.cnt)+" : "+value+"Ω"+"\n"
@@ -69,15 +69,16 @@ class MyApp(QWidget):
                 self, 'Input Value', "Enter Value")
 
             if ok:
-                pin, ok = QInputDialog.getText(
-                    self, 'Input Pin', "Enter Pin in Tuple")
+                rawPin, ok = QInputDialog.getText(
+                    self, 'Input Pin', "Enter Pin >pin1,pin2<")
 
                 if ok:
                     self.res += "Diode" + "\n"
                     self.label.setText(self.res)
                     self.cnt[type] += 1
 
-        self.formDict(self, rawCircuit, type, self.cnt, float(value), list(pin))
+        pin = rawPin.split(",")
+        self.formDict(self, rawCircuit, type, self.cnt, float(value), pin)
 
     def formDict(self, rawCircuit, type, cnt, value, pin):  # (self, dict, str, int, float, list)
         key = type + str(cnt[type])
