@@ -78,7 +78,7 @@ class MyApp(QWidget):
                     self.cnt[type] += 1
 
         pin = rawPin.split(",")
-        self.formDict(self, rawCircuit, type, self.cnt, float(value), pin)
+        rawCircuit = self.formDict(self, rawCircuit, type, self.cnt, float(value), pin)
 
     def formDict(self, rawCircuit, type, cnt, value, pin):  # (self, dict, str, int, float, list)
         key = type + str(cnt[type])
@@ -97,3 +97,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     sys.exit(app.exec_())
+    with open("circuit.json","w") as json_file:
+        json.dump(rawCircuit, json_file)
