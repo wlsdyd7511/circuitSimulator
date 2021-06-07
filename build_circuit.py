@@ -10,7 +10,11 @@ class MyApp(QWidget):
         super().__init__()
         self.initUI()
         self.res = str()
-        self.cnt = 0
+        self.cnt = {
+                    "DCPower" : 0,
+                    "resistor" : 0,
+                    "diode" : 0
+                   }
 
     def initUI(self):
         btn1 = QPushButton('DCPower', self)
@@ -43,7 +47,7 @@ class MyApp(QWidget):
                     self, 'Input Pin', "Enter Pin in Tuple")
 
                 if ok:
-                    self.cnt += 1
+                    self.cnt[0] += 1
                     self.res += "DCPower"+str(self.cnt)+" : "+value+"V"+"\n"
                     self.label.setText(self.res)
 
@@ -58,7 +62,7 @@ class MyApp(QWidget):
                 if ok:
                     self.res += "Resister"+str(self.cnt)+" : "+value+"Ω"+"\n"
                     self.label.setText(self.res)
-                    self.cnt += 1
+                    self.cnt[1] += 1
 
         if type == 'Diode':
             value, ok = QInputDialog.getText(
@@ -71,12 +75,12 @@ class MyApp(QWidget):
                 if ok:
                     self.res += "Diode" + "\n"
                     self.label.setText(self.res)
-                    self.cnt += 1
+                    self.cnt[2] += 1
 
         self.formDict(self, rawCircuit, type, self.cnt, float(value),)
 
     def formDict(self, rawCircuit, type, cnt, value, pin):  # (self, dict, str, int, float, list)
-        key = type + str(cnt)
+        key = type + str(cnt[type])
         rawCircuit[key] = dict()
         rawCircuit[key]["type"] = type
         if type == "DCPower":
