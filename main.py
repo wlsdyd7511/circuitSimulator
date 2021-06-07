@@ -119,34 +119,6 @@ def findLine(cir, matrix, pinList):
         return False, cir
 
 
-def getBasicMatrix(matrix, pinList):
-    basicMatrix = copy.deepcopy(matrix)
-    basicPinList = copy.deepcopy(pinList)
-    numPin = len(pinList)
-    pinToDel = list()
-    for i in range(numPin):
-        cntPin = 0
-        for j in range(numPin):
-            cntPin += matrix[i][j]
-        if cntPin == 2:
-            pinToDel.append(i)
-            pinToConnect = list()
-            for j in range(numPin):
-                if matrix[i][j] == 1:
-                    pinToConnect.append(j)
-            basicMatrix[pinToConnect[0]][pinToConnect[1]] += 1
-            basicMatrix[pinToConnect[1]][pinToConnect[0]] += 1
-    pinToDel.reverse()
-    cntSeq = 0
-    for i in pinToDel:
-        del basicPinList[i]
-        del basicMatrix[i]
-        cntSeq += 1
-        for j in range(numPin - cntSeq):
-            del basicMatrix[j][i]
-    return((basicMatrix, basicPinList))
-
-
 # basicMatrix, basicElements, seq = 0, parallel = list()
 def findParallel(bM, bE, seq, parallel):
     isEnd = True
