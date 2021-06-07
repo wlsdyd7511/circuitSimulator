@@ -19,14 +19,6 @@
         "type": "resistor",
         "resistance": 50.0,
         "pin": [
-            "b",
-            "c"
-        ]
-    },
-    "resistor3": {
-        "type": "resistor",
-        "resistance": 150.0,
-        "pin": [
             "c",
             "a"
         ]
