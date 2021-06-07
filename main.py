@@ -5,6 +5,11 @@ import itertools
 import structures as s
 
 
+numLine = 1
+numParallel = 1
+numBridge = 1
+
+
 def getAdMatrix(cir):
     pinList = list()
     for k in cir:
@@ -23,39 +28,95 @@ def getAdMatrix(cir):
                 if ((pinList[i] in cir[k]["pin"]) and (pinList[j] in cir[k]["pin"])):
                     cnt += 1
                     matrix[i][j] = cnt
-    return((matrix, pinList))
+    return matrix, pinList
 
 
-def structureCircuit(matrix, pinList):
-    numPin = len(pinList)
-    findLine(matrix, pinList, numPin)
+def structureCircuit(cir):
+    matrix, pinList = getAdMatrix(cir)
+    while True:
+        res, cir = findLine(cir, matrix, pinList)
+        if res:
+            matrix, pinList = getAdMatrix(cir)
+        else:
+            break
 
 
 def findConnected(matrix, pin):
-    connected = []
+    connected = [pin]
+    start = True
     for i in range(len(matrix[pin])):
         if matrix[pin][i] == 1:
             connected.append(i)
             if sum(matrix[i]) == 2:
                 connected += findConnected(matrix, i)
     for i in range(len(connected)):
-        if len(end) == 1:
-            connected[i], connected[0] = connected[0], connected[i]
-        else:
-            connected[i], connected[-1] = connected[-1], connected[i]
+        if sum(matrix[i]) != 2:
+            if start:
+                connected[i], connected[0] = connected[0], connected[i]
+                start = False
+            else:
+                connected[i], connected[-1] = connected[-1], connected[i]
     for i in range(len(connected)):
         for j in range(i+1, len(connected)):
             if matrix[i][j] == 1:
                 connected[i+1], connected[j] = connected[j], connected[i+1]
+    endPins = [connected[0], connected[-1]]
     del connected[0]
     del connected[-1]
-    return connected
+    return connected, endPins
 
 
-def findLine(matrix, pinList, numPin):
-    for i in range(numPin):
+def findLine(cir, matrix, pinList):
+    '''
+    Replace elements in cir into Line object
+    return False when there is no more Line
+    '''
+    connected = None
+    elements = []
+    endPins = []
+    for i in range(len(pinList)):
         if (sum(matrix[i]) == 2) and (2 not in matrix[i]):
-            connected = findConnected(matrix, pinList, i)
+            connected, endPins = findConnected(matrix, i)
+            if len(connected) == 1:
+                for j in endPins:
+                    for k in cir:
+                        if (pinList[j] in cir[k]['pin'] and
+                           pinList[connected[0]] in cir[k]['pin']):
+                            elements.append(k)
+                break
+            else:
+                for j in cir:
+                    if (pinList[connected[0]] in cir[j]['pin'] and
+                       pinList[connected[1]] not in cir[j]['pin']):
+                        elements.append(j)
+                for j in range(len(connected)-1):
+                    for k in cir:
+                        if (pinList[connected[i]] in cir[k]['pin'] and
+                           pinList[connected[i+1]] in cir[k]['pin']):
+                            elements.append(k)
+                for j in cir:
+                    if (pinList[connected[-1]] in cir[j]['pin'] and
+                       pinList[connected[-2]] not in cir[j]['pin']):
+                        elements.append(k)
+                break
+    if connected is not None:
+        endPins = [pinList[n] for n in endPins]
+        connected = [pinList[n] for n in connected]
+        for i in connected:
+            removeElements = []
+            for j in cir:
+                if i in cir[j]['pin']:
+                    removeElements.append(j)
+            for _ in removeElements:
+                cir.pop(removeElements.pop())
+        cir[f'Line{numLine}'] = {
+                                 'type': 'Line',
+                                 'obJect': s.Line(elements, connected),
+                                 'pin': endPins}
+        pinList = [n for n in pinList if n not in connected]
+        return True, cir
+    else:
+        return False, cir
 
 
 def getBasicMatrix(matrix, pinList):
@@ -111,23 +172,11 @@ def findParallel(bM, bE, seq, parallel):
 def findBridge():
     isEnd = True
 
+# =================================================================================
 
 with open(sys.argv[1], 'r') as f:
     circuit = json.load(f)
 editCircuit = copy.deepcopy(circuit)
 
-for i in circuit:
-    if(circuit[i]['type'] == 'DCPower'):
-        editCircuit[circuit[i]['pin'][0]] = dict()
-        editCircuit[circuit[i]['pin'][0]][circuit[i]
-                                          ['pin'][1]] = circuit[i]['voltage']
-        trackPoint = circuit[i]['pin'][1]
-        trackElement = i
-
-
-(ADMatrix, pinList) = getAdMatrix(circuit)
-print(ADMatrix)
-basicMatrix = getBasicMatrix(ADMatrix, pinList)
-print('bm', basicMatrix)
-superBasicMatrix = findParallel(basicMatrix[0], basicMatrix[1], 0, [])
-print(superBasicMatrix)
+structureCircuit(editCircuit)
+print(editCircuit)
