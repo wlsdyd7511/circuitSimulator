@@ -3,6 +3,7 @@ import sys
 import copy
 import itertools
 import structures as s
+from itertools import combinations, product
 
 
 numLine = 1
@@ -33,12 +34,19 @@ def getAdMatrix(cir):
 
 def structureCircuit(cir):
     matrix, pinList = getAdMatrix(cir)
-    while True:
+    noStructureCount = 0
+    while noStructureCount < 3:
         res, cir = findLine(cir, matrix, pinList)
         if res:
             matrix, pinList = getAdMatrix(cir)
         else:
-            break
+            noStructureCount += 1
+
+        res, cir = findParallel(cir, matrix, pinList)
+        if res:
+            matrix, pinList = getAdMatrix(cir)
+        else:
+            noStructureCount += 1
 
 
 def findConnected(matrix, pin):
@@ -119,31 +127,14 @@ def findLine(cir, matrix, pinList):
         return False, cir
 
 
-# def findParallel(bM, bE, seq, parallel):
-#     isEnd = True
-#     parallel.append(list())
-#     pinComb = itertools.combinations(bE, 2)
-#     for i in pinComb:
-#         x, y = bE.index(i[0]), bE.index(i[1])
-#         if bM[x][y] >= 2:
-#             print(bM, bE, seq, bM[x][y], x, y)
-#             # seq겹 병렬을 병렬[]의 seq번째 리스트에 ((핀, 핀), connection수)로 저장
-#             parallel[seq].append(((bE[x], bE[y]), bM[x][y]))
-#             bM[x][y] = 1  # seq겹 병렬 무시
-#             isEnd = False
-#     if isEnd:
-#         parallel.pop()
-#         return((bM, parallel))
-#     else:
-#         basicMatrix = getBasicMatrix(bM, bE)
-#         print('.')
-#         return(findParallel(basicMatrix[0], basicMatrix[1], seq + 1, parallel))
 def findParallel(cir, matrix, pinList):
     lines = []
     found = False
+    pins = []
     for i in range(len(pinList)):
         for j in range(i+1, len(pinList)):
             if matrix[i, j] >= 2:
+                pins = [i, j]
                 for k in cir:
                     if i in cir[k]['pin'] and j in cir[k]['pin']:
                         lines.append(k)
@@ -153,11 +144,45 @@ def findParallel(cir, matrix, pinList):
         if found:
             break
     if lines:
-        
-            
+        for _ in lines:
+            cir.pop(lines.pop())
+        cir[f'Parallel{numParallel}'] = {
+                                         'type': 'Parallel',
+                                         'object': s.Parallel(lines),
+                                         'pin': pins}
+    return found, cir
 
-def findBridge():
-    isEnd = True
+
+def findBridge(cir, matrix, pinList):
+    lines = []
+    found = False
+    comb = list(combinations(pinList, 4))
+    for c in comb:
+        ends = list(combinations(c, 2))
+        for e in ends:
+            if matrix[e[0]][e[1]] == 0:
+                m = [n for n in c if n not in e]
+                if matrix[m[0]][m[1]] == 1:
+                    prod = list(product(e, m))
+                    for (x, y) in prod:
+                        if matrix[x][y] != 1:
+                            found = False
+                            break
+                        else:
+                            found = True
+                if found:
+                    endPins = e
+                    midPins = m
+                    break
+        if found:
+            break
+
+    pair = list(combinations(endPins + midPins, 2))
+    for i in cir:
+        for j in pair:
+            if j[0] in cir[i]['pin'] and j[1] in cir[i]['pin']
+            cir.pop(j)
+
 
 # =================================================================================
 
