@@ -66,14 +66,18 @@ def structureCircuit(cir):
         print()
 
 
-def findConnected(matrix, pin):
+def findConnected(cir, matrix, pin):
     connected = [pin]
+    BTConnected = False
+    for k in cir:
+        if pin in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
+            BTConnected = True
     start = True
     for i in range(len(matrix[pin])):
         if matrix[pin][i] == 1:
             connected.append(i)
-            if sum(matrix[i]) == 2:
-                connected += findConnected(matrix, i)
+            if sum(matrix[i]) == 2 and not BTConnected:
+                connected += findConnected(cir, matrix, i)
 #     print(f'before sort: {connected}')
 
     for i in range(len(connected)):
@@ -108,7 +112,7 @@ def findLine(cir, matrix, pinList):
     endPins = []
     for i in range(len(pinList)):
         if (sum(matrix[i]) == 2) and (2 not in matrix[i]):
-            connected, endPins = findConnected(matrix, i)
+            connected, endPins = findConnected(cir, matrix, i)
             if len(connected) == 1:
                 for j in endPins:
                     for k in cir:
