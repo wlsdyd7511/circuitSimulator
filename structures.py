@@ -1,35 +1,50 @@
+import sys
+
+
 class Line:
-    def __init__(self, elements, pins):  # lines, pins: list
+    def __init__(self, cir, elements, pins):  # lines, pins: list
         self.elements = elements
         self.pins = pins
         self.resistance = 0.0
-        for i in elements:
-            if 'resistance' in i:
-                self.resistance += i['resistance']
+        print(elements)
+        for e in elements:
+            if cir[e]['type'] == 'structure':
+                self.resistance += cir[e]['object'].resistance
+            else:
+                print(f'cir: {cir}\nele: {e}\npin: {pins}')
+                self.resistance += cir[e]['resistance']
 
 
 class Parallel:
-    def __init__(self, lines):
+    def __init__(self, cir, lines):
         self.lines = lines
         self.admittance = 0
-        for i in lines:
-            if str(type(i)) == "<class 'dict'>":
-                self.admittance += 1.0/i['resistance']
+        print(f'l: {lines}')
+        for l in lines:
+            if cir[l]['type'] == 'structure':
+                print(f's: {l}')
+                self.admittance += 1.0 / cir[l]['object'].resistance
             else:
-                self.admittance += 1.0/i.resistance
-        self.resistance = 1.0/self.admittance
+                print(f'e: {l}')
+                print(f'c: {cir}')
+                self.admittance += 1.0 / cir[l]['resistance']
+        if self.admittance:
+            self.resistance = 1.0 / self.admittance
+        else:
+            print('ERR: Admittance is 0')
+            sys.exit()
 
 
 class Bridge:
-    def __init__(self, lines, pins):
+    def __init__(self, cir, lines, pins):
         self.lines = lines
         self.pins = pins
         self.rl = []
-        for i in self.lines:
-            if str(type(i)) == "<class 'dict'>":
-                self.rl.append(i['resistance'])
+        for l in self.lines:
+            if cir[l]['type'] == 'structure':
+                self.rl.append(cir[l]['object'].resistance)
             else:
-                self.rl.append(i.resistance)
+                self.rl.append(cir[l]['resistance'])
         self.resistance = (1 / (
             1 / (
                 self.rl[0] +
