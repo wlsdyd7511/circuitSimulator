@@ -76,10 +76,12 @@ def findConnected(cir, matrix, pinList, pin):
                 connected += findConnected(cir, matrix, pinList, i)
 
     for i in range(len(connected)):
-        # iBTConnected = False
-        # for k in cir:
-        #     if
-        if sum(matrix[connected[i]]) != 2:
+        currentBTConnected = False
+        for k in cir:
+            print(f'connected: {connected}')
+            if pinList[connected[i]] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
+                currentBTConnected = True
+        if sum(matrix[connected[i]]) != 2 or currentBTConnected:
             if start:
                 connected[i], connected[0] = connected[0], connected[i]
                 start = False
@@ -134,6 +136,7 @@ def findLine(cir, matrix, pinList):
                         elements.append(k)
                 break
     if connected is not None:
+        print(f'connected: {connected}\nelements: {elements}')
         endPins = [pinList[n] for n in endPins]
         connected = [pinList[n] for n in connected]
         cir[f'Line{numLine}'] = {
