@@ -95,7 +95,7 @@ def findConnected(cir, matrix, pinList, pin, doSort):
                 if matrix[i][j] == 1:
                     connected[i + 1], connected[j] = connected[j], connected[i + 1]
         if matrix[connected[-1]][connected[-2]] != 1:
-    endPins = [connected[0], connected[-1]]
+            endPins = [connected[0], connected[-1]]
     del connected[0]
     del connected[-1]
     return connected, endPins
