@@ -1,10 +1,11 @@
 import sys
+import copy
 
 
 class Line:
     def __init__(self, cir, elements, pins):  # lines, pins: list
-        self.elements = elements
-        self.pins = pins
+        self.elements = copy.deepcopy(elements)
+        self.pins = copy.deepcopy(pins)
         self.resistance = 0.0
         print(elements)
         for e in elements:
@@ -17,7 +18,8 @@ class Line:
 
 class Parallel:
     def __init__(self, cir, lines):
-        self.lines = lines
+        print(f'parClassLines: {lines}')
+        self.lines = copy.deepcopy(lines)
         self.admittance = 0
         print(f'l: {lines}')
         for l in lines:
@@ -37,8 +39,8 @@ class Parallel:
 
 class Bridge:
     def __init__(self, cir, lines, pins):
-        self.lines = lines
-        self.pins = pins
+        self.lines = copy.deepcopy(lines)
+        self.pins = tuple(copy.deepcopy(pins))
         self.rl = []
         for l in self.lines:
             if cir[l]['type'] == 'structure':
