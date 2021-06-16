@@ -42,7 +42,6 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                # print(f'find Line: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 1
@@ -51,7 +50,6 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                # print(f'find Parallel: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 2
@@ -60,7 +58,6 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                # print(f'find Bridge: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 0
@@ -74,7 +71,6 @@ def findConnected(cir, matrix, pinList, pin, doSort):
         BTConnected = False
         for k in cir:
             if pinList[i] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
-                # print(f'{pinList[i]} is connected to battery')
                 BTConnected = True
         if matrix[pin][i] == 1:
             connected.append(i)
@@ -89,7 +85,6 @@ def findConnected(cir, matrix, pinList, pin, doSort):
             for k in cir:
                 if pinList[connected[i]] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
                     currentBTConnected = True
-                    # print(f'{pinList[connected[i]]} is connected with battery')
             if sum(matrix[connected[i]]) != 2 or currentBTConnected:
                 if start:
                     connected[i], connected[0] = connected[0], connected[i]
@@ -126,7 +121,6 @@ def findLine(cir, matrix, pinList):
             if cir[k]['type'] == 'DCPower' and pinList[i] in cir[k]['pin']:
                 iDCPower = True
         if sum(matrix[i]) == 2 and 2 not in matrix[i] and not iDCPower:
-            # print(f'currentPin: {i}\nmatrix: {matrix}\npinList: {pinList}\ncir: {cir}\n')
             connected, endPins = findConnected(cir, matrix, pinList, i, True)
             if len(connected) == 1:
                 for j in endPins:
@@ -207,13 +201,13 @@ def findParallel(cir, matrix, pinList):
             'structure': 'Parallel',
             'object': s.Parallel(cir, lines),
             'pin': pins}
+        numParallel += 1
         length = len(lines)
         for _ in range(length):
             temp = lines.pop()
             if temp not in restore:
                 restore[temp] = copy.deepcopy(cir[temp])
             cir.pop(temp)
-        numParallel += 1
     return found, cir
 
 
@@ -270,6 +264,7 @@ def findBridge(cir, matrix, pinList):
             'structure': 'Bridge',
             'object': s.Bridge(cir, lines, midPins),
             'pin': endPins}
+        numBridge += 1
 
         for _ in range(5):
             temp = lines.pop()
@@ -292,7 +287,7 @@ def analyze(cir, data):
             break
 
     if not end:
-        cir.pop(remove)
+        del cir[remove]
         for (name, V, I) in temp:
             cir[name] = copy.deepcopy(data[name])
             cir[name]['V'] = V

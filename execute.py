@@ -29,9 +29,11 @@ class ShowResult(QWidget):
         name, ok = QInputDialog.getText(self, 'File Loader', 'Input File Name')
 
         if ok:
-            with open(name+".json", "r") as f:
+            with open(name + ".json", "r") as f:
                 circuit = json.load(f)
             resultDict = rawToResult(circuit)  # 회로 json -> 결과 딕션 함수
+            print(len(resultDict))
+            print(resultDict)
             self.textSet(resultDict)
 
     def textSet(self, resultDict):
