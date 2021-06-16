@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (
     QApplication, QInputDialog, QWidget, QGridLayout, QPushButton, QLabel)
 from main import *
+import json
 
 
 class ShowResult(QWidget):
@@ -36,7 +37,8 @@ class ShowResult(QWidget):
     def textSet(self, resultDict):
         text = str()
         for i in resultDict:
-            text += i+" : "+str(resultDict[i]["value"])+"\n"
+            if resultDict[i]['type'] == 'resistor':
+                text += f"{i} : {resultDict[i]['V']} V   {resultDict[i]['I']} A\n"
         self.label.setText(text)
 
 

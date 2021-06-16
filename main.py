@@ -1,7 +1,5 @@
-import json
 import sys
 import copy
-import itertools
 import structures as s
 from itertools import combinations, product
 
@@ -338,5 +336,4 @@ def rawToResult(circuit):
     while not end:
         end, editCircuit = analyze(editCircuit, restore)
 
-    print(editCircuit)
     return editCircuit
