@@ -2,6 +2,9 @@ from PyQt5.QtWidgets import (
     QApplication, QInputDialog, QWidget, QGridLayout, QPushButton, QLabel)
 from main import *
 import json
+import os
+
+os.chdir(os.path.dirname(sys.argv[0]))
 
 
 class ShowResult(QWidget):
@@ -32,13 +35,18 @@ class ShowResult(QWidget):
             with open(name + ".json", "r") as f:
                 circuit = json.load(f)
             resultDict = rawToResult(circuit)  # 회로 json -> 결과 딕션 함수
-            print(len(resultDict))
-            print(resultDict)
             self.textSet(resultDict)
 
     def textSet(self, resultDict):
         text = str()
-        for i in resultDict:
+        keyList = sorted(resultDict)
+        k = 0
+        for i in range(len(keyList)):
+            if len(keyList[i-k]) > 9:
+                temp = keyList.pop(i-k)
+                keyList.append(temp)
+                k += 1
+        for i in keyList:
             if resultDict[i]['type'] == 'resistor':
                 text += f"{i} : {resultDict[i]['V']} V   {resultDict[i]['I']} A\n"
         self.label.setText(text)
