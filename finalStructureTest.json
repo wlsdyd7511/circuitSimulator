@@ -1,0 +1,114 @@
+{
+    "DCPower1": {
+        "type": "DCPower",
+        "voltage": 90.0,
+        "pin": [
+            "h",
+            "a"
+        ]
+    },
+    "resistor1": {
+        "type": "resistor",
+        "resistance": 7.0,
+        "pin": [
+            "a",
+            "b"
+        ]
+    },
+    "resistor2": {
+        "type": "resistor",
+        "resistance": 6.0,
+        "pin": [
+            "a",
+            "b"
+        ]
+    },
+    "resistor3": {
+        "type": "resistor",
+        "resistance": 3.0,
+        "pin": [
+            "a",
+            "c"
+        ]
+    },
+    "resistor4": {
+        "type": "resistor",
+        "resistance": 4.0,
+        "pin": [
+            "b",
+            "d"
+        ]
+    },
+    "resistor5": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "d",
+            "c"
+        ]
+    },
+    "resistor6": {
+        "type": "resistor",
+        "resistance": 5.0,
+        "pin": [
+            "c",
+            "g"
+        ]
+    },
+    "resistor7": {
+        "type": "resistor",
+        "resistance": 9.0,
+        "pin": [
+            "b",
+            "e"
+        ]
+    },
+    "resistor8": {
+        "type": "resistor",
+        "resistance": 31.0,
+        "pin": [
+            "g",
+            "e"
+        ]
+    },
+    "resistor9": {
+        "type": "resistor",
+        "resistance": 12.0,
+        "pin": [
+            "g",
+            "e"
+        ]
+    },
+    "resistor10": {
+        "type": "resistor",
+        "resistance": 7.0,
+        "pin": [
+            "e",
+            "h"
+        ]
+    },
+    "resistor11": {
+        "type": "resistor",
+        "resistance": 5.5,
+        "pin": [
+            "a",
+            "i"
+        ]
+    },
+    "resistor12": {
+        "type": "resistor",
+        "resistance": 6.0,
+        "pin": [
+            "i",
+            "h"
+        ]
+    },
+    "resistor13": {
+        "type": "resistor",
+        "resistance": 30.0,
+        "pin": [
+            "i",
+            "h"
+        ]
+    }
+}

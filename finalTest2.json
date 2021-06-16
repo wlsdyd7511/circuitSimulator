@@ -1,0 +1,194 @@
+{
+    "DCPower1": {
+        "type": "DCPower",
+        "voltage": 1.0,
+        "pin": [
+            "n",
+            "a"
+        ]
+    },
+    "resistor1": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "a",
+            "b"
+        ]
+    },
+    "resistor2": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "b",
+            "c"
+        ]
+    },
+    "resistor3": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "b",
+            "e"
+        ]
+    },
+    "resistor4": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "e",
+            "f"
+        ]
+    },
+    "resistor5": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "f",
+            "c"
+        ]
+    },
+    "resistor6": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "c",
+            "d"
+        ]
+    },
+    "resistor7": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "c",
+            "d"
+        ]
+    },
+    "resistor8": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "f",
+            "d"
+        ]
+    },
+    "resistor9": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "a",
+            "h"
+        ]
+    },
+    "resistor10": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "h",
+            "d"
+        ]
+    },
+    "resistor11": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "h",
+            "g"
+        ]
+    },
+    "resistor12": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "g",
+            "d"
+        ]
+    },
+    "resistor13": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "g",
+            "d"
+        ]
+    },
+    "resistor14": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "d",
+            "k"
+        ]
+    },
+    "resistor15": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "h",
+            "i"
+        ]
+    },
+    "resistor16": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "i",
+            "j"
+        ]
+    },
+    "resistor17": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "j",
+            "k"
+        ]
+    },
+    "resistor18": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "j",
+            "k"
+        ]
+    },
+    "resistor19": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "i",
+            "k"
+        ]
+    },
+    "resistor20": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "k",
+            "l"
+        ]
+    },
+    "resistor21": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "l",
+            "n"
+        ]
+    },
+    "resistor22": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "l",
+            "m"
+        ]
+    },
+    "resistor23": {
+        "type": "resistor",
+        "resistance": 1.0,
+        "pin": [
+            "m",
+            "n"
+        ]
+    }
+}
