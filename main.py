@@ -4,7 +4,9 @@ import copy
 import itertools
 import structures as s
 from itertools import combinations, product
-
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QGridLayout, QPushButton, QLabel, QLineEdit)
+from PyQt5.QtCore import (QCoreApplication, Qt)
 
 numLine = 1
 numParallel = 1
@@ -247,11 +249,79 @@ def findBridge(cir, matrix, pinList):
     return found, cir
 
 
+class selectFile(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        finBtn = QPushButton('Select', self)
+        finBtn.clicked.connect(self.loadFile)
+
+        qle = QLineEdit(self)
+        qle.textChanged[str].connect(self.onChanged)
+
+        grid = QGridLayout()
+        self.setLayout(grid)
+
+        grid.addWidget(qle, 0, 0)
+        grid.addWidget(finBtn, 0, 1)
+
+        self.setWindowTitle('Select File')
+        self.setGeometry(300, 300, 300, 200)
+        self.show()
+
+    def onChanged(self, text):
+        self.text = text
+
+    def loadFile(self):
+        QCoreApplication.instance().quit()
+        with open(self.text+".json", "r") as f:
+            self.circuit = open()
+        resultPage({})
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex1 = selectFile()
+    sys.exit(app.exec_())
+
+
+class ShowResult(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        label = QLabel('First Label', self)
+        label.setAlignment(Qt.AlignCenter)
+
+        grid = QGridLayout()
+        self.setLayout(grid)
+
+        grid.addWidget(label, 0, 0)
+
+        self.setWindowTitle('Result')
+        self.setGeometry(300, 300, 300, 200)
+        self.show()
+
+
+def resultPage(resultDict):
+    app = QApplication(sys.argv)
+    ex2 = ShowResult()
+    ex2.resultdict = resultDict
+    sys.exit(app.exec_())
+
+
 # =================================================================================
 
+"""
 with open(sys.argv[1], 'r') as f:
     circuit = json.load(f)
 editCircuit = copy.deepcopy(circuit)
 
 structureCircuit(editCircuit)
 print(editCircuit)
+"""
