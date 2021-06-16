@@ -7,6 +7,7 @@
 # 실험 결과
 ![Pspice](https://github.com/wlsdyd7511/circuitSimulator/blob/master/img/pspice.png)
 ![our](https://github.com/wlsdyd7511/circuitSimulator/blob/master/img/our.png)
+
 이미 검증된 프로그램인 Pspice의 결과와 비교했을 때 브릿지 구조의 밖은 전류가 거의 비슷한 것을 알 수 있다.
 따라서 브릿지 구조의 전체 저항을 구하는 식에는 문제가 없지만, 전압과 전류를 분배하는 과정에 문제가 있을 것이다.
 브릿지 밖에도 약간의 오차가 있는 것은 부동 소수점 형식을 이용해 계산했기 때문에 어쩔 수 없이 발생하는 오차다.
