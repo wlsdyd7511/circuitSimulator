@@ -10,6 +10,9 @@ numLine = 1
 numParallel = 1
 numBridge = 1
 
+restore = None
+editCircuit = None
+
 
 def getAdMatrix(cir):
     pinList = []
@@ -302,32 +305,38 @@ def analyze(cir, data):
 
 # =================================================================================
 
-with open(sys.argv[1], 'r') as f:
-    circuit = json.load(f)
-editCircuit = copy.deepcopy(circuit)
-restore = copy.deepcopy(circuit)
+# with open(sys.argv[1], 'r') as f:
+#     circuit = json.load(f)
 
-structureCircuit(editCircuit)
+def rawToResult(circuit):
+    global editCircuit
+    global restore
 
-if len(editCircuit) != 2:
-    print('ERROR: 분석할 수 없는 회로입니다.')
-    sys.exit()
+    editCircuit = copy.deepcopy(circuit)
+    restore = copy.deepcopy(circuit)
 
-for k in editCircuit:
-    if editCircuit[k]['type'] == 'DCPower':
-        entireVolt = editCircuit[k]['voltage']
+    structureCircuit(editCircuit)
+
+    if len(editCircuit) != 2:
+        print('ERROR: 분석할 수 없는 회로입니다.')
+        sys.exit()
+
+    for k in editCircuit:
+        if editCircuit[k]['type'] == 'DCPower':
+            entireVolt = editCircuit[k]['voltage']
+        else:
+            notPower = k
+    editCircuit[notPower]['V'] = entireVolt
+    if editCircuit[notPower]['type'] == 'structure':
+        tempR = editCircuit[notPower]['object'].resistance
     else:
-        notPower = k
-editCircuit[notPower]['V'] = entireVolt
-if editCircuit[notPower]['type'] == 'structure':
-    tempR = editCircuit[notPower]['object'].resistance
-else:
-    tempR = editCircuit[notPower]['resistance']
-editCircuit[notPower]['I'] = entireVolt / tempR
+        tempR = editCircuit[notPower]['resistance']
+    editCircuit[notPower]['I'] = entireVolt / tempR
 
-end = False
+    end = False
 
-while not end:
-    end, editCircuit = analyze(editCircuit, restore)
+    while not end:
+        end, editCircuit = analyze(editCircuit, restore)
 
-print(editCircuit)
+    print(editCircuit)
+    return editCircuit
