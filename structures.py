@@ -7,40 +7,32 @@ class Line:
         self.elements = copy.deepcopy(elements)
         self.pins = copy.deepcopy(pins)
         self.resistance = 0.0
-        print(elements)
         for e in elements:
             if cir[e]['type'] == 'structure':
                 self.resistance += cir[e]['object'].resistance
             else:
-                print(f'cir: {cir}\nele: {e}\npin: {pins}')
                 self.resistance += cir[e]['resistance']
 
 
 class Parallel:
     def __init__(self, cir, lines):
-        print(f'parClassLines: {lines}')
         self.lines = copy.deepcopy(lines)
         self.admittance = 0
-        print(f'l: {lines}')
         for l in lines:
             if cir[l]['type'] == 'structure':
-                print(f's: {l}')
                 self.admittance += 1.0 / cir[l]['object'].resistance
             else:
-                print(f'e: {l}')
-                print(f'c: {cir}')
                 self.admittance += 1.0 / cir[l]['resistance']
         if self.admittance:
             self.resistance = 1.0 / self.admittance
         else:
-            print('ERR: Admittance is 0')
             sys.exit()
 
 
 class Bridge:
     def __init__(self, cir, lines, pins):
-        self.lines = copy.deepcopy(lines)
-        self.pins = tuple(copy.deepcopy(pins))
+        self.lines = tuple(copy.deepcopy(lines))
+        self.pins = copy.deepcopy(pins)
         self.rl = []
         for l in self.lines:
             if cir[l]['type'] == 'structure':

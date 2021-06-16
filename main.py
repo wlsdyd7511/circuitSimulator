@@ -41,6 +41,7 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
+                print(f'find Line\n{cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 1
@@ -49,6 +50,7 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
+                print(f'find Parallel\n{cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 2
@@ -57,13 +59,16 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
+                print(f'find Bridge\n{cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 0
 
 
 def findConnected(cir, matrix, pinList, pin, doSort):
+    print(f'find pin: {pinList[pin]}')
     connected = [pin]
+    endPins = []
     BTConnected = False
     for k in cir:
         if pinList[pin] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
@@ -71,6 +76,7 @@ def findConnected(cir, matrix, pinList, pin, doSort):
     start = True
     for i in range(len(matrix[pin])):
         if matrix[pin][i] == 1:
+            print(f'append {pinList[i]}')
             connected.append(i)
             if sum(matrix[i]) == 2 and not BTConnected:
                 iConnected, _ = findConnected(cir, matrix, pinList, i, False)
@@ -209,13 +215,17 @@ def findBridge(cir, matrix, pinList):
     global restore
     lines = []
     found = False
-    comb = list(combinations(pinList, 4))
+    comb = list(combinations(range(len(pinList)), 4))
     endPins = []
     midPins = []
     for c in comb:
         ends = list(combinations(c, 2))
         for e in ends:
-            if matrix[e[0]][e[1]] == 0:
+            eBTConnected = False
+            for k in cir:
+                if pinList[e[0]] in cir[k]['pin'] and pinList[e[1]] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
+                    eBTConnected = True
+            if matrix[e[0]][e[1]] == 0 or eBTConnected:
                 m = [n for n in c if n not in e]
                 if matrix[m[0]][m[1]] == 1:
                     prod = list(product(e, m))
@@ -229,6 +239,8 @@ def findBridge(cir, matrix, pinList):
                     endPins = e
                     midPins = m
                     break
+            if found:
+                break
         if found:
             break
     if found:
@@ -236,17 +248,20 @@ def findBridge(cir, matrix, pinList):
 
         for (m, e) in pair:
             for k in cir:
-                if m in cir[k]['pin'] and e in cir[k]['pin']:
+                if pinList[m] in cir[k]['pin'] and pinList[e] in cir[k]['pin']:
                     lines.append(k)
 
         for k in cir:
-            if m[0] in cir[k]['pin'] and m[1] in cir[k]['pin']:
+            if pinList[midPins[0]] in cir[k]['pin'] and pinList[midPins[1]] in cir[k]['pin']:
                 lines.append(k)
+
+        midPins = [pinList[n] for n in midPins]
+        endPins = [pinList[n] for n in endPins]
 
         cir[f'bridge{numBridge}'] = {
             'type': 'structure',
             'structure': 'Bridge',
-            'object': s.Bridge(lines, midPins),
+            'object': s.Bridge(cir, lines, midPins),
             'pin': endPins}
 
         for _ in range(5):
@@ -266,4 +281,4 @@ editCircuit = copy.deepcopy(circuit)
 restore = copy.deepcopy(circuit)
 
 structureCircuit(editCircuit)
-(editCircuit)
+print(editCircuit)
