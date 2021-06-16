@@ -1,0 +1,50 @@
+{
+    "DCPower1": {
+        "type": "DCPower",
+        "voltage": 35.0,
+        "pin": [
+            "d",
+            "a"
+        ]
+    },
+    "resistor1": {
+        "type": "resistor",
+        "resistance": 3.0,
+        "pin": [
+            "a",
+            "b"
+        ]
+    },
+    "resistor2": {
+        "type": "resistor",
+        "resistance": 7.0,
+        "pin": [
+            "a",
+            "c"
+        ]
+    },
+    "resistor3": {
+        "type": "resistor",
+        "resistance": 2.0,
+        "pin": [
+            "b",
+            "c"
+        ]
+    },
+    "resistor4": {
+        "type": "resistor",
+        "resistance": 10.0,
+        "pin": [
+            "b",
+            "d"
+        ]
+    },
+    "resistor5": {
+        "type": "resistor",
+        "resistance": 6.0,
+        "pin": [
+            "c",
+            "d"
+        ]
+    }
+}
