@@ -13,6 +13,17 @@ class Line:
             else:
                 self.resistance += cir[e]['resistance']
 
+    def reconstruct(self, data, V, I):
+        res = []
+        for i in self.elements:
+            if data[i]['type'] == 'structure':
+                rx = data[i]['object'].resistance
+            else:
+                rx = data[i]['resistance']
+
+            res.append((i, V * rx / self.resistance, I))
+        return res
+
 
 class Parallel:
     def __init__(self, cir, lines):
@@ -27,6 +38,17 @@ class Parallel:
             self.resistance = 1.0 / self.admittance
         else:
             sys.exit()
+
+    def reconstruct(self, data, V, I):
+        res = []
+        for i in self.lines:
+            if data[i]['type'] == 'structure':
+                rx = data[i]['object'].resistance
+            else:
+                rx = data[i]['resistance']
+
+            res.append((i, V, V / rx))
+        return res
 
 
 class Bridge:
@@ -54,3 +76,26 @@ class Bridge:
             ((self.rl[1] * self.rl[3]) /
              (self.rl[1] + self.rl[3] + self.rl[4]))
         )
+
+    def reconstruct(self, data, V, I):
+        res = []
+        vl = [0 for _ in range(5)]
+
+        #  4, 1, 3변환 -> 0, 2 전압
+        tempV = self.resistance - (self.rl[1] * self.rl[3]) / (self.rl[1] + self.rl[3] + self.rl[4])
+        vl[0] = tempV * self.rl[0] / (self.rl[0] + (self.rl[1] * self.rl[4]) / (self.rl[1] + self.rl[3] + self.rl[4]))
+        vl[2] = tempV * self.rl[2] / (self.rl[2] + (self.rl[3] * self.rl[4]) / (self.rl[1] + self.rl[3] + self.rl[4]))
+
+        tempV = self.resistance - (self.rl[0] * self.rl[2]) / (self.rl[0] + self.rl[2] + self.rl[4])
+        vl[1] = tempV * self.rl[1] / (self.rl[1] + (self.rl[0] * self.rl[4]) / (self.rl[0] + self.rl[2] + self.rl[4]))
+        vl[3] = tempV * self.rl[3] / (self.rl[3] + (self.rl[2] * self.rl[4]) / (self.rl[0] + self.rl[2] + self.rl[4]))
+
+        rth = 1 / (1 / self.rl[0] + 1 / self.rl[1]) + 1 / (1 / self.rl[2] + 1 / self.rl[3])
+        vth = V * (self.rl[0] / (self.rl[0] + self.rl[1]) - self.rl[2] / (self.rl[2] + self.rl[3]))
+        i = vth / (rth + self.rl[4])
+        vl[4] = i * self.rl[4]
+
+        for n in range(5):
+            res.append((self.lines[n], vl[n], vl[n] / self.rl[n]))
+
+        return res

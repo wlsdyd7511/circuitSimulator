@@ -41,7 +41,7 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                print(f'find Line: {cir}\n')
+                # print(f'find Line: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 1
@@ -50,7 +50,7 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                print(f'find Parallel: {cir}\n')
+                # print(f'find Parallel: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 2
@@ -59,7 +59,7 @@ def structureCircuit(cir):
             if res:
                 noStructureCount = 0
                 matrix, pinList = getAdMatrix(cir)
-                print(f'find Bridge: {cir}\n')
+                # print(f'find Bridge: {cir}\n')
             else:
                 noStructureCount += 1
                 nextFind = 0
@@ -73,7 +73,7 @@ def findConnected(cir, matrix, pinList, pin, doSort):
         BTConnected = False
         for k in cir:
             if pinList[i] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
-                print(f'{pinList[i]} is connected to battery')
+                # print(f'{pinList[i]} is connected to battery')
                 BTConnected = True
         if matrix[pin][i] == 1:
             connected.append(i)
@@ -88,7 +88,7 @@ def findConnected(cir, matrix, pinList, pin, doSort):
             for k in cir:
                 if pinList[connected[i]] in cir[k]['pin'] and cir[k]['type'] == 'DCPower':
                     currentBTConnected = True
-                    print(f'{pinList[connected[i]]} is connected with battery')
+                    # print(f'{pinList[connected[i]]} is connected with battery')
             if sum(matrix[connected[i]]) != 2 or currentBTConnected:
                 if start:
                     connected[i], connected[0] = connected[0], connected[i]
@@ -125,7 +125,7 @@ def findLine(cir, matrix, pinList):
             if cir[k]['type'] == 'DCPower' and pinList[i] in cir[k]['pin']:
                 iDCPower = True
         if sum(matrix[i]) == 2 and 2 not in matrix[i] and not iDCPower:
-            print(f'currentPin: {i}\nmatrix: {matrix}\npinList: {pinList}\ncir: {cir}\n')
+            # print(f'currentPin: {i}\nmatrix: {matrix}\npinList: {pinList}\ncir: {cir}\n')
             connected, endPins = findConnected(cir, matrix, pinList, i, True)
             if len(connected) == 1:
                 for j in endPins:
@@ -281,10 +281,53 @@ def findBridge(cir, matrix, pinList):
 
 # =================================================================================
 
+def analyze(cir, data):
+    end = True
+    for k in cir:
+        if cir[k]['type'] == 'structure':
+            end = False
+            remove = k
+            temp = cir[k]['object'].reconstruct(data, cir[k]['V'], cir[k]['I'])
+            break
+
+    if not end:
+        cir.pop(remove)
+        for (name, V, I) in temp:
+            cir[name] = copy.deepcopy(data[name])
+            cir[name]['V'] = V
+            cir[name]['I'] = I
+
+    return end, cir
+
+
+# =================================================================================
+
 with open(sys.argv[1], 'r') as f:
     circuit = json.load(f)
 editCircuit = copy.deepcopy(circuit)
 restore = copy.deepcopy(circuit)
 
 structureCircuit(editCircuit)
+
+if len(editCircuit) != 2:
+    print('ERROR: 분석할 수 없는 회로입니다.')
+    sys.exit()
+
+for k in editCircuit:
+    if editCircuit[k]['type'] == 'DCPower':
+        entireVolt = editCircuit[k]['voltage']
+    else:
+        notPower = k
+editCircuit[notPower]['V'] = entireVolt
+if editCircuit[notPower]['type'] == 'structure':
+    tempR = editCircuit[notPower]['object'].resistance
+else:
+    tempR = editCircuit[notPower]['resistance']
+editCircuit[notPower]['I'] = entireVolt / tempR
+
+end = False
+
+while not end:
+    end, editCircuit = analyze(editCircuit, restore)
+
 print(editCircuit)
