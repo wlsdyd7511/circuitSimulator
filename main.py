@@ -332,6 +332,3 @@ def rawToResult(circuit):
 
     return editCircuit
 
-with open(sys.argv[1], 'r') as f:
-    circuit = json.load(f)
-    print(json.dumps(rawToResult(circuit), sort_keys = True, indent = 4))
