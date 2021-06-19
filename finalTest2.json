@@ -1,7 +1,7 @@
 {
     "DCPower1": {
         "type": "DCPower",
-        "voltage": 1.0,
+        "voltage": 90.0,
         "pin": [
             "n",
             "a"

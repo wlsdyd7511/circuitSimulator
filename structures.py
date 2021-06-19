@@ -82,11 +82,11 @@ class Bridge:
         vl = [0 for _ in range(5)]
 
         #  4, 1, 3변환 -> 0, 2 전압
-        tempV = self.resistance * (1 - (self.rl[1] * self.rl[3]) / (self.rl[1] + self.rl[3] + self.rl[4]))
+        tempV = V * (1 - ((self.rl[1] * self.rl[3]) / (self.rl[1] + self.rl[3] + self.rl[4])) / self.resistance)
         vl[0] = tempV * self.rl[0] / (self.rl[0] + (self.rl[1] * self.rl[4]) / (self.rl[1] + self.rl[3] + self.rl[4]))
         vl[2] = tempV * self.rl[2] / (self.rl[2] + (self.rl[3] * self.rl[4]) / (self.rl[1] + self.rl[3] + self.rl[4]))
 
-        tempV = self.resistance * (1 - (self.rl[0] * self.rl[2]) / (self.rl[0] + self.rl[2] + self.rl[4]))
+        tempV = V * (1 - ((self.rl[0] * self.rl[2]) / (self.rl[0] + self.rl[2] + self.rl[4])) / self.resistance)
         vl[1] = tempV * self.rl[1] / (self.rl[1] + (self.rl[0] * self.rl[4]) / (self.rl[0] + self.rl[2] + self.rl[4]))
         vl[3] = tempV * self.rl[3] / (self.rl[3] + (self.rl[2] * self.rl[4]) / (self.rl[0] + self.rl[2] + self.rl[4]))
 

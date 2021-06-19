@@ -1,6 +1,7 @@
 import sys
 import copy
 import structures as s
+import json
 from itertools import combinations, product
 
 
@@ -298,8 +299,6 @@ def analyze(cir, data):
 
 # =================================================================================
 
-# with open(sys.argv[1], 'r') as f:
-#     circuit = json.load(f)
 
 def rawToResult(circuit):
     global editCircuit
@@ -332,3 +331,7 @@ def rawToResult(circuit):
         end, editCircuit = analyze(editCircuit, restore)
 
     return editCircuit
+
+with open(sys.argv[1], 'r') as f:
+    circuit = json.load(f)
+    print(json.dumps(rawToResult(circuit), sort_keys = True, indent = 4))
